@@ -1,6 +1,7 @@
 import glob
 from PIL import Image
 import numpy as np
+import os
 
 
 def download_images(datadir, RGB = 2, contrast = 1):
