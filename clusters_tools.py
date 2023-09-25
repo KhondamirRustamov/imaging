@@ -3,11 +3,20 @@ from PIL import Image
 import numpy as np
 
 
-def download_images(datadir):
+def download_images(datadir, RGB = 2, contrast = 1):
     im_list = []
+    RGB -= 1
     for i in glob.glob(f'{datadir}/*'):
-        image_pil = Image.open(i)
-        im_list.append(np.asarray(image_pil)[:,:,1]*10)
+        if contrast == 0:
+            image_pil = np.asarray(Image.open(i))[:,:,RGB]*1
+        else:
+            image_pil = np.asarray(Image.open(i))[:,:,RGB]*contrast
+        im_list.append(image_pil)
+    if contrast == 0:
+        max = max([np.max(x) for x in im_list])
+        min = min([np.min(x) for x in im_list])
+        for i, x in enumerate(im_list):
+            im_list[i] = (im_list[i] - min)/(max-min)
     return im_list
 
 
